@@ -125,7 +125,7 @@ class floodfill(algorithm):
         start_pose = self.find_finish()
         self.values[start_pose[0]][start_pose[1]] = 0
         first_move = self.find_first_move()
-        # print(start_pose)
+        print(start_pose)
         # print(first_move)
         self.flood_fill(first_move,first_move[2],0)
         #print(self.values)
