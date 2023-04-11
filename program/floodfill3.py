@@ -3,10 +3,11 @@ from algorithm import algorithm
 from maze_reader import maze_reader
 
 class floodfill(algorithm):
-    INF = "x"
+    INF = 2137
     def __init__(self,_maze):
         self.maze = _maze
         self.values = [[self.INF for _ in range(16)] for _ in range(16)]
+        self.path = [[0 for _ in range(16)] for _ in range(16)]
 
     def flood_fill(self, start_col, start_row, end_col, end_row,forbidden_direction,value):
         current_col = start_col
@@ -56,22 +57,44 @@ class floodfill(algorithm):
                     values_queue.append(value + 1)
                     fd_queue.append(self.WEST)
 
+    
+   
 
+
+    def get_path(self, start_col, start_row):
+        pass
+        # col = start_col
+        # row = start_row
+        # # value = self.values[col][row]
+        # # self.path[col][row] = 1
+
+        # # while(value):
+        # #   [col,row] = self.one_less(col,row)
+        # #   value = self.values[col][row]
+        # #   self.path[col][row] = 1
+
+
+
+
+            
+         
+         
 
     def solve(self):
         [end_col,end_row] = self.find_finish()
-        self.flood_fill(0,0,7,8,self.EAST,0)
+        self.flood_fill(0,0,end_col,end_row,self.EAST,0)
+        self.get_path(end_col,end_row)
+
         for i in range(15,-1,-1):   
             for j in range(16):
-                print(self.values[j][i],end=" ")
+                print(self.path[j][i],end=" ")
             print("\n")
         
-        # print(self.values[2])
             
 
 
 r = maze_reader()
-maze = r.read_maze("mazes/maze5_58")
+maze = r.read_maze("mazes/maze2_50")
 f = floodfill(maze)
 
 f.solve()
