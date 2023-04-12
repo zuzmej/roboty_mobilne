@@ -9,7 +9,16 @@ class floodfill(algorithm):
         self.values = [[self.INF for _ in range(16)] for _ in range(16)]
         self.path = [[0 for _ in range(16)] for _ in range(16)]
 
-    def flood_fill(self, start_col, start_row, end_col, end_row,forbidden_direction,value):
+        # Opis działania:
+        # 1. wepchnięcie na koniec kolejek początkowych współrzędnych, kierunku poruszania się i wartosći pola
+        # 2. zdjęcie z początków kolejek współrzędnych (bieżąco rozpatrywanych), kierunku poruszania się(bieżąco rozpatrywanego) i wartosći pola (bieżąco rozpatrywanego)
+        # 3. sprawdzenie czy w bierzącym polu jest już przypisana wartość
+        #   3.1. jesli tak to powrót do 2.
+        #   3.2. wpisanie wartości bieżącej do listy wartosći
+        # 4. sprawdzenie jakie sąsiadujące kwadraty są osoiągalne
+        # 5.wepchnięcie na koniec kolejek osiągalnych kwadratów, ich wartości  i kierunków poruszania się
+        # 6. powrót do 2 dopuki nie osiągneliśmy końca labiryntu
+    def flood_fill(self, start_col, start_row, end_col, end_row,forbidden_direction,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
         current_col = start_col
         current_row = start_row
         cols_queue = []
@@ -24,7 +33,7 @@ class floodfill(algorithm):
         
         
         
-        while(current_col != end_col or current_row != end_row):
+        while(current_col != end_col or current_row != end_row): # dopuki nie trafimy do środka labirynu
             current_col = cols_queue.pop(0)
             current_row = rows_queue.pop(0)
             value = values_queue.pop(0)
@@ -59,20 +68,58 @@ class floodfill(algorithm):
 
     
    
+    # znajduje minimalną wartość  w otoczeniu danego pola 
+    def find_smallest_value(self,start_col,start_row):
+        cols = []
+        rows = []
+        values = []
+
+        if(self.maze[start_col][start_row] & self.NORTH == 0):
+            cols.append(start_col)
+            rows.append(start_row + 1)
+            values.append(self.values[start_col][start_row + 1])
+            
+        if(self.maze[start_col][start_row] & self.SOUTH == 0):
+            cols.append(start_col)
+            rows.append(start_row - 1)
+            values.append(self.values[start_col][start_row - 1])
+            
+        if(self.maze[start_col][start_row] & self.WEST == 0):
+            cols.append(start_col - 1)
+            rows.append(start_row)
+            values.append(self.values[start_col - 1][start_row])
+
+        if(self.maze[start_col][start_row] & self.EAST  == 0):
+            cols.append(start_col + 1)
+            rows.append(start_row)
+            values.append(self.values[start_col + 1][start_row])
+           
+
+        min_value = min(values)
+        if(min_value > self.values[start_col][start_row]):
+            return None
+       
+        index = values.index(min_value)
+        current_col = cols.pop(index)
+        current_row = rows.pop(index)
+           
+        cols.clear()
+        rows.clear()
+        values.clear()
+        return [current_col,current_row]
+            
 
 
-    def get_path(self, start_col, start_row):
-        pass
-        # col = start_col
-        # row = start_row
-        # # value = self.values[col][row]
-        # # self.path[col][row] = 1
-
-        # # while(value):
-        # #   [col,row] = self.one_less(col,row)
-        # #   value = self.values[col][row]
-        # #   self.path[col][row] = 1
-
+            
+        #wyznacza ścieżke 
+    def get_path(self,end_col, end_row,start_col, start_row):
+        current_col = start_col
+        current_row = start_row
+        self.path[current_col][current_row] = 1
+        while(current_col != end_col or current_row != end_row):
+            [current_col, current_row] = self.find_smallest_value(current_col, current_row)
+            self.path[current_col][current_row] = 1
+            
 
 
 
@@ -83,21 +130,10 @@ class floodfill(algorithm):
     def solve(self):
         [end_col,end_row] = self.find_finish()
         self.flood_fill(0,0,end_col,end_row,self.EAST,0)
-        self.get_path(end_col,end_row)
-
-        for i in range(15,-1,-1):   
-            for j in range(16):
-                print(self.path[j][i],end=" ")
-            print("\n")
+        self.get_path(0,0,end_col,end_row)
+        # for i in range(15,-1,-1):   
+        #     for j in range(16):
+        #         print(self.path[j][i],end=" ")
+        #     print("\n")
         
-            
-
-
-r = maze_reader()
-maze = r.read_maze("mazes/maze2_50")
-f = floodfill(maze)
-
-f.solve()
-
                 
-                       
