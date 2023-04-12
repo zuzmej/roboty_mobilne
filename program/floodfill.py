@@ -3,8 +3,8 @@ from algorithm import algorithm
 from maze_reader import maze_reader
 
 
-## @class floodfill
-# @brief Class containing implementations of the floodfill algorithm
+
+## @brief Class containing implementations of the floodfill algorithm
 #
 # 
 
