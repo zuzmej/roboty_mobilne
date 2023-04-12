@@ -2,8 +2,18 @@ from data import data
 from algorithm import algorithm
 from maze_reader import maze_reader
 
+
+## @class floodfill
+# @brief Class containing implementations of the floodfill algorithm
+#
+# 
+
 class floodfill(algorithm):
     INF = 2137
+
+    ## @brief Constructor
+    #
+    # @param _maze 2d list representing the layout of the walls in the maze 
     def __init__(self,_maze):
         self.maze = _maze
         self.values = [[self.INF for _ in range(16)] for _ in range(16)]
@@ -18,6 +28,20 @@ class floodfill(algorithm):
         # 4. sprawdzenie jakie sąsiadujące kwadraty są osoiągalne
         # 5.wepchnięcie na koniec kolejek osiągalnych kwadratów, ich wartości  i kierunków poruszania się
         # 6. powrót do 2 dopuki nie osiągneliśmy końca labiryntu
+
+    ## @brief Maze flooding algorithm 
+    #
+    # @details The algorithm starts flooding from the starting field (the field in which the robot is located at the beginning). 
+    # Pouring is done in the direction of the center. The higher the value of a given field, the farther that field is from the start field. 
+    #
+    # @param start_col Column number describing the starting field
+    # @param start_row Row number describing the starting field
+    # @param end_col Column number describing the end field (center of the maze)
+    # @param end_row Row number describing the end field (center of the maze)
+    # @param forbidden_direction The direction in which you can not move (protects you from reversing the robot)
+    # @param value Initial value from which flooding begins 
+
+
     def flood_fill(self, start_col, start_row, end_col, end_row,forbidden_direction,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
         current_col = start_col
         current_row = start_row
@@ -67,8 +91,13 @@ class floodfill(algorithm):
                     fd_queue.append(self.WEST)
 
     
-   
-    # znajduje minimalną wartość  w otoczeniu danego pola 
+   ## @brief Finds the field with the smallest value to which the robot can move
+   #
+   # @details Finds the field with the smallest value in the vicinity of the field in question, to which the robot can legally move
+   #
+   # @param start_col Column specifying the field in whose neighborhood we are looking for the smallest value 
+   # @param end_col Row specifying the field in whose neighborhood we are looking for the smallest value 
+   # @return Column and row describing the field with the smallest value 
     def find_smallest_value(self,start_col,start_row):
         cols = []
         rows = []
@@ -112,6 +141,14 @@ class floodfill(algorithm):
 
             
         #wyznacza ścieżke 
+    ## @brief Determines the path from the center of the maze to the starting field
+    #
+    # @details Determines a path by looking for the field with the smallest value in the neighborhood of the current field 
+    # 
+    # @param end_col Column number describing the starting field
+    # @param end_row Row number describing the starting field
+    # @param start_col Column number describing the end field
+    # @param start_row Row number describing the end field
     def get_path(self,end_col, end_row,start_col, start_row):
         current_col = start_col
         current_row = start_row
@@ -126,11 +163,14 @@ class floodfill(algorithm):
             
          
          
-
+    ## @brief  Method that performs all the steps necessary to determine the path 
+    #
+    # @return path Returns a 2d list representing the path from the start field to the end field.
     def solve(self):
         [end_col,end_row] = self.find_finish()
         self.flood_fill(0,0,end_col,end_row,self.EAST,0)
         self.get_path(0,0,end_col,end_row)
+        return self.path
         # for i in range(15,-1,-1):   
         #     for j in range(16):
         #         print(self.path[j][i],end=" ")
