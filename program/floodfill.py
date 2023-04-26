@@ -42,18 +42,16 @@ class floodfill(algorithm):
     # @param value Initial value from which flooding begins 
 
 
-    def flood_fill(self, start_col, start_row, end_col, end_row,forbidden_direction,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
+    def flood_fill(self, start_col, start_row, end_col, end_row,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
         current_col = start_col
         current_row = start_row
         cols_queue = []
         rows_queue = []
         values_queue = []
-        fd_queue = []
 
         cols_queue.append(current_col)
         rows_queue.append(current_row)
         values_queue.append(value)
-        fd_queue.append(forbidden_direction)
         
         
         
@@ -61,34 +59,29 @@ class floodfill(algorithm):
             current_col = cols_queue.pop(0)
             current_row = rows_queue.pop(0)
             value = values_queue.pop(0)
-            forbidden_direction = fd_queue.pop(0)
 
             if(self.values[current_col][current_row] == self.INF):
                 self.values[current_col][current_row] = value
 
-                if(self.maze[current_col][current_row] & self.NORTH == 0 and self.NORTH != forbidden_direction):
+                if(self.maze[current_col][current_row] & self.NORTH == 0):
                     cols_queue.append(current_col)
                     rows_queue.append(current_row + 1)
                     values_queue.append(value + 1)
-                    fd_queue.append(self.SOUTH)
 
-                if(self.maze[current_col][current_row] & self.SOUTH == 0 and self.SOUTH != forbidden_direction):
+                if(self.maze[current_col][current_row] & self.SOUTH == 0):
                     cols_queue.append(current_col)
                     rows_queue.append(current_row - 1)
                     values_queue.append(value + 1)
-                    fd_queue.append(self.NORTH)
 
-                if(self.maze[current_col][current_row] & self.WEST == 0 and self.WEST != forbidden_direction):
+                if(self.maze[current_col][current_row] & self.WEST == 0):
                     cols_queue.append(current_col - 1)
                     rows_queue.append(current_row)
                     values_queue.append(value + 1)
-                    fd_queue.append(self.EAST)
 
-                if(self.maze[current_col][current_row] & self.EAST  == 0 and self.EAST != forbidden_direction):
+                if(self.maze[current_col][current_row] & self.EAST  == 0):
                     cols_queue.append(current_col + 1)
                     rows_queue.append(current_row)
                     values_queue.append(value + 1)
-                    fd_queue.append(self.WEST)
 
     
    ## @brief Finds the field with the smallest value to which the robot can move
@@ -168,12 +161,18 @@ class floodfill(algorithm):
     # @return path Returns a 2d list representing the path from the start field to the end field.
     def solve(self):
         [end_col,end_row] = self.find_finish()
-        self.flood_fill(0,0,end_col,end_row,self.EAST,0)
+        self.flood_fill(0,0,end_col,end_row,0)
         self.get_path(0,0,end_col,end_row)
+        for i in range(15,-1,-1):   
+            for j in range(16):
+                print(self.path[j][i],end="   ")
+            print("\n")
+
         return self.path
-        # for i in range(15,-1,-1):   
-        #     for j in range(16):
-        #         print(self.path[j][i],end=" ")
-        #     print("\n")
+        
+
+mz = maze_reader()
+f = floodfill(mz.read_maze("mazes/maze2_50"))
+f.solve()
         
                 
