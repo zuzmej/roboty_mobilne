@@ -15,36 +15,51 @@ class right_hand(algorithm):
 
 
     def right_hand_algorithm(self, position, end_position):
-        start_north = self.NORTH
-        start_right = self.EAST
-        start_left = self.WEST
-        start_south = self.SOUTH
+        front = self.NORTH
+        right = self.EAST
+        left = self.WEST
+        back = self.SOUTH
+        direction = right
         column = position[0]    # obecne położenie
         row = position[1]
         self.path[column][row] = 1     # wpisanie 1 do listy tam, gdzie znalazł się robot
-        for i in range(7):
-            if position != end_position:   # dopóki robot nie dotrze do końca ścieżki
-                print("\nZaczynamy\n")
-                if not self.maze[column][row] & self.EAST: #jeśli nie ma prawej ściany
-                    column += 1                                 # "jedzie w prawo" -- zwiększa się kolumna
-                    position = [column, row]
-                    self.path[column][row] = 1     # zaznacza ścieżkę
-                elif not self.maze[column][row] & self.NORTH:  #jest prawa ściana, ale nie ma przedniej
-                    print("Tu nie ma przedniej ściany: ", position)
-                    row += 1                                    # "jedzie do przodu" -- zwiększa się rząd
-                    position = [column, row]
-                    self.path[column][row] = 1
-                elif not self.maze[column][row] & self.WEST:  #są prawa i przednia, ale nie ma lewej ściany
-                    column -= 1                                    # "jedzie w lewo" -- zmniejsza się kolumna
-                    position = [column, row]
-                    self.path[column][row] = 1
-                    print("position 3", position)
-                elif not self.maze[column][row] & self.SOUTH: #są ściany prawa, przednia, lewa, ale nie ma tylnej
-                    row -= 1                                       # "jedzie do tyłu" -- zmniejsza się rząd
-                    position = [column, row]
-                    self.path[column][row] = 1
-                    print("position 4", position)
-                print(position)
+        while position != end_position:   # dopóki robot nie dotrze do końca ścieżki
+            if not self.maze[column][row] & right: #jeśli nie ma prawej ściany
+                direction = right
+            elif not self.maze[column][row] & front:  #jest prawa ściana, ale nie ma przedniej
+                direction = front
+            elif not self.maze[column][row] & left:  #są prawa i przednia, ale nie ma lewej ściany
+                direction = left     
+            elif not self.maze[column][row] & back: #są ściany prawa, przednia, lewa, ale nie ma tylnej
+                direction = back
+            
+            if direction == self.NORTH:
+                row += 1
+                front = self.NORTH
+                right = self.EAST
+                left = self.WEST
+                back = self.SOUTH
+            if direction == self.EAST:
+                column += 1
+                right = self.SOUTH
+                front = self.EAST
+                left = self.NORTH
+                back = self.WEST
+            if direction == self.SOUTH:
+                row -= 1
+                front = self.SOUTH
+                right = self.WEST
+                left = self.EAST
+                back = self.NORTH
+            if direction == self.WEST:
+                column -= 1
+                front = self.WEST
+                right = self.NORTH
+                left = self.SOUTH
+                back = self.EAST
+            position = [column, row]
+            self.path[column][row] = 1
+            print("position: ", position)
         return self.path
     
 
@@ -67,5 +82,5 @@ class right_hand(algorithm):
 
 
 maze = maze_reader()
-rh = right_hand(maze.read_maze("mazes/maze2"))
+rh = right_hand(maze.read_maze("mazes/maze_cut"))   #maze_cut da sie rozwiazac prawa reka
 rh.solve()
