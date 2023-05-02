@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from data import data
-from maze_reader import maze_reader #do testów
+
+## @brief Class algorithm containing abstract method solve and method find_finish
+# 
+#  
 
 class algorithm(data,ABC):
     # zdefiniowanie kierunków do określania ścian labiryntu
@@ -9,10 +12,16 @@ class algorithm(data,ABC):
     SOUTH = 4   #binarnie: 0100
     WEST = 8    #binarnie: 1000
     
-    # @abstractmethod   #odkomentować po testach
-    # def solve(self):
-    #     pass
+    ## @brief abstract method - solve to be implemented in each algorithm of finding path to the center of the maze
+    #
+    @abstractmethod
+    def solve(self):
+        pass
 
+    ## @brief Method to find the coordinates of the center of maze
+    #
+    # @details Firstly, the algorithm finds four neighbouring fields which create one big square without walls inside. Secondly, the algorithm checks whether these fields do have exactly 7 walls outside, enclosing the big square.
+    # @return The coordinates of the center of the maze
     def find_finish(self) -> list:  #metoda do znajdowania współrzędnych końca ścieżki
         finish_position = []
         walls_number = 0
@@ -48,11 +57,3 @@ class algorithm(data,ABC):
                         pass
                     walls_number = 0
         return finish_position
-    
-
-
-
-maze = maze_reader()
-maze.read_maze("mazes/maze_6_100")
-s = algorithm()
-print(s.find_finish())
