@@ -40,6 +40,7 @@ class floodfill(algorithm):
     # @param end_row Row number describing the end field (center of the maze)
     # @param forbidden_direction The direction in which you can not move (protects you from reversing the robot)
     # @param value Initial value from which flooding begins 
+    #
 
 
     def flood_fill(self, start_col, start_row, end_col, end_row,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
@@ -91,6 +92,7 @@ class floodfill(algorithm):
    # @param start_col Column specifying the field in whose neighborhood we are looking for the smallest value 
    # @param end_col Row specifying the field in whose neighborhood we are looking for the smallest value 
    # @return Column and row describing the field with the smallest value 
+   #
     def find_smallest_value(self,start_col,start_row):
         cols = []
         rows = []
@@ -142,6 +144,7 @@ class floodfill(algorithm):
     # @param end_row Row number describing the starting field
     # @param start_col Column number describing the end field
     # @param start_row Row number describing the end field
+    #
     def get_path(self,end_col, end_row,start_col, start_row):
         current_col = start_col
         current_row = start_row
@@ -159,6 +162,7 @@ class floodfill(algorithm):
     ## @brief  Method that performs all the steps necessary to determine the path 
     #
     # @return path Returns a 2d list representing the path from the start field to the end field.
+    #
     def solve(self):
         [end_col,end_row] = self.find_finish()
         self.flood_fill(0,0,end_col,end_row,0)
