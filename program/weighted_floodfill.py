@@ -12,13 +12,13 @@ class weighted_floodfill(algorithm):
     ## @brief Constructor
     #
     # @param _maze 2d list representing the layout of the walls in the maze 
+    #
 
     def __init__(self,_maze):
         self.maze = _maze
         self.values = [[self.INF for _ in range(16)] for _ in range(16)]
         self.path = [[0 for _ in range(16)] for _ in range(16)]
 
-    #########
     # działa tak samo jak zykły floodfill , tylko na zakręcie przyznaje 5 a nie 1 
 
 
@@ -33,6 +33,7 @@ class weighted_floodfill(algorithm):
     # @param end_row Row number describing the end field (center of the maze)
     # @param direction direction in which the robot moves
     # @param value Initial value from which flooding begins 
+    #
 
     def flood_fill(self, start_col, start_row, end_col, end_row,direction,value): # pole startowe; pole końcowe (srodek labiryntu); kierunek w ktory nie można iść, wartość początkowa 
         current_col = start_col
@@ -108,6 +109,7 @@ class weighted_floodfill(algorithm):
 # @param start_col Column specifying the field in whose neighborhood we are looking for the smallest value 
 # @param end_col Row specifying the field in whose neighborhood we are looking for the smallest value 
 # @return Column and row describing the field with the smallest value 
+#
 
     def find_smallest_value(self,start_col,start_row):
         cols = []
@@ -157,6 +159,7 @@ class weighted_floodfill(algorithm):
 # @param end_row Row number describing the starting field
 # @param start_col Column number describing the end field
 # @param start_row Row number describing the end field
+#
 
     def get_path(self,end_col, end_row,start_col, start_row):
         current_col = start_col
@@ -169,6 +172,7 @@ class weighted_floodfill(algorithm):
 ## @brief  Method that performs all the steps necessary to determine the path 
 #
 # @return path Returns a 2d list representing the path from the start field to the end field.
+#
 
 
     def solve(self):

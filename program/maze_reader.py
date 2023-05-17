@@ -1,6 +1,17 @@
 from data import data
 
+## @brief class for the interpretation of files containing a maze 
+#
+#
+
 class maze_reader(data):
+
+    ## @brief method reads the contents of the maze file, then writes it in the appropriate porm to the 2d list 
+    #
+    # @param maze_name the name of the maze file
+    # @return maze 2d list representing maze
+    #
+
 
     def read_maze(self, maze_name: str) -> list:
         with open(maze_name,"r") as maze_file:  #otwarcie pliku 
