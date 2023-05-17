@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from data import data
 
-## @brief Class algorithm containing abstract method solve and method find_finish
+## @brief Class algorithm contains abstract method solve and method find_finish
 # 
 #  
 
