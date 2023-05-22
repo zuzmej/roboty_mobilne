@@ -9,13 +9,18 @@ class graphics_engine(data):
         self.window = tk.Tk()
         self.chosen_maze = tk.StringVar()
         self.chosen_algorithm = tk.StringVar()
-        self.create_widgets()
-        
-    def create_widgets(self):
-        choose_maze_button = tk.Button(self.window, text="Wybierz labirynt", command = self.open_selection_window_maze)
-        choose_maze_button.pack()
-        choose_algorithm_button = tk.Button(self.window, text=self.chosen_algorithm.get(), command=self.open_selection_window_algorithm)
-        choose_algorithm_button.pack()
+
+        self.label_chosen_maze = tk.Label(self.window, text = "---")
+        self.label_chosen_maze.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label_chosen_algorithm = tk.Label(self.window, text="---")
+        self.label_chosen_algorithm.grid(row=1, column=1, padx=10, pady=10)
+
+        self.choose_maze_button = tk.Button(self.window, text="Wybierz labirynt:", command = self.open_selection_window_maze)
+        self.choose_maze_button.grid(row=0, column=0, padx=10, pady=10) # choose_maze_button.pack()
+
+        self.choose_algorithm_button = tk.Button(self.window, text="Wybierz algorytm:", command=self.open_selection_window_algorithm)
+        self.choose_algorithm_button.grid(row=1, column=0, padx=10, pady=10) # choose_algorithm_button.pack()
 
     def open_selection_window_algorithm(self):
         selection_window_algorithm = tk.Toplevel(self.window)
@@ -35,7 +40,7 @@ class graphics_engine(data):
 
         list_of_mazes = os.listdir("mazes") # pobranie nazw z folderu z labiryntami
         option_combobox_maze['values'] = list_of_mazes
-        option_combobox_maze.bind("<<ComboboxSelected>>", lambda event: self.close_window_after_choosing(window, self.chosen_maze))
+        option_combobox_maze.bind("<<ComboboxSelected>>", lambda event: self.close_selection_window(window, self.chosen_maze))
         option_combobox_maze.pack()
 
     def option_choose_algorithm(self, window):
@@ -46,12 +51,16 @@ class graphics_engine(data):
 
         option_combobox_algorithm = ttk.Combobox(selection_frame_algorithm, textvariable = self.chosen_algorithm)
         option_combobox_algorithm['values'] = ('prawa ręka', 'zalewanie', 'ważone zalewanie', 'dijkstra')
-        option_combobox_algorithm.bind("<<ComboboxSelected>>", lambda event: self.close_window_after_choosing(window, self.chosen_algorithm))
+        option_combobox_algorithm.bind("<<ComboboxSelected>>", lambda event: self.close_selection_window(window, self.chosen_algorithm))
         option_combobox_algorithm.pack()
 
-    def close_window_after_choosing(self, given_window, chosen):  # metoda do zamykania okienka z listą wybieralną po wybraniu opcji
+    def close_selection_window(self, given_window, chosen):  # metoda do zamykania okienka z listą wybieralną po wybraniu opcji
         if chosen.get():   # jeśli opcja została wybrana
             given_window.destroy()  # zamknij okienko
+            if chosen == self.chosen_maze:  # wpisywanie wybranej opcji do etykiety
+                self.label_chosen_maze.config(text=chosen.get())
+            if chosen == self.chosen_algorithm:
+                self.label_chosen_algorithm.config(text=chosen.get())
 
     def run(self):
         self.window.mainloop()
