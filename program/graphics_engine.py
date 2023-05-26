@@ -3,24 +3,35 @@ import tkinter as tk
 from tkinter import ttk
 import os   #operacje na plikach i katalogach
 
+from maze_reader import maze_reader
+
 class graphics_engine(data):
 
+    NORTH = 1   #binarnie: 0001
+    EAST = 2    #binarnie: 0010
+    SOUTH = 4   #binarnie: 0100
+    WEST = 8    #binarnie: 1000
     def __init__(self):
         self.window = tk.Tk()
         self.chosen_maze = tk.StringVar()
         self.chosen_algorithm = tk.StringVar()
-
-        self.label_chosen_maze = tk.Label(self.window, text = "---")
-        self.label_chosen_maze.grid(row=0, column=1, padx=10, pady=10)
-
-        self.label_chosen_algorithm = tk.Label(self.window, text="---")
-        self.label_chosen_algorithm.grid(row=1, column=1, padx=10, pady=10)
+        self.canva = tk.Canvas(self.window, width= 514,height=514)
+        self.canva.pack()
 
         self.choose_maze_button = tk.Button(self.window, text="Wybierz labirynt:", command = self.open_selection_window_maze)
-        self.choose_maze_button.grid(row=0, column=0, padx=10, pady=10) # choose_maze_button.pack()
-
+        self.choose_maze_button.pack()
+        
+        self.label_chosen_maze = tk.Label(self.window, text = "---")
+        self.label_chosen_maze.pack()
         self.choose_algorithm_button = tk.Button(self.window, text="Wybierz algorytm:", command=self.open_selection_window_algorithm)
-        self.choose_algorithm_button.grid(row=1, column=0, padx=10, pady=10) # choose_algorithm_button.pack()
+        self.choose_algorithm_button.pack()
+        self.label_chosen_algorithm = tk.Label(self.window, text="---")
+        self.label_chosen_algorithm.pack()
+        self.play = tk.Button(self.window, text="Play")
+        self.play.pack()
+        
+
+       
 
     def open_selection_window_algorithm(self):
         selection_window_algorithm = tk.Toplevel(self.window)
@@ -56,9 +67,12 @@ class graphics_engine(data):
 
     def close_selection_window(self, given_window, chosen):  # metoda do zamykania okienka z listą wybieralną po wybraniu opcji
         if chosen.get():   # jeśli opcja została wybrana
+            print("jestjesm w ifie")
             given_window.destroy()  # zamknij okienko
             if chosen == self.chosen_maze:  # wpisywanie wybranej opcji do etykiety
                 self.label_chosen_maze.config(text=chosen.get())
+                print("jestjesm w ifie 2 ")
+                self.draw_maze(chosen.get())
             if chosen == self.chosen_algorithm:
                 self.label_chosen_algorithm.config(text=chosen.get())
 
@@ -67,8 +81,37 @@ class graphics_engine(data):
 
 
 
-    def draw_maze(self):
-        pass
+    def draw_maze(self,filename):
+        self.canva.delete("all")
+        
+        filename = "mazes/"+filename
+        # line_n = self.canva.create_line(0,0,32,0,width=4)
+        # line_s = self.canva.create_line(0,32,32,32,width=4)
+        # line_e = self.canva.create_line(32,0,32,32,width=4)
+        # line_w = self.canva.create_line(0,0,0,32,width=4)
+        print(filename)
+
+        maze_r = maze_reader()
+        maze = maze_r.read_maze(filename)
+        # print(maze)
+        offset = 32
+        for x in range(16):   
+            for y in range(16):
+                if(maze[x][y] & self.NORTH):
+                    self.canva.create_line(0+x*offset, 0+(15-y)*offset, 32+x*offset, 0+(15-y)*offset,width=4)
+                
+                if(maze[x][y] & self.SOUTH):
+                #    self.canva.create_line(x*offset, y*offset+offset, x*offset+offset, y*offset+offset,width=4)
+                    self.canva.create_line(0+x*offset, 32+(15-y)*offset, 32+x*offset, 32+(15-y)*offset,width=4)
+                    # self.canva.create_line(512-x*offset, 32+y*offset, 32+x*offset, 32+y*offset,width=4)
+
+                    # self.canva.create_line(x+x*offset,y+y*offset,x*offset,y*offset,width=4)
+                if(maze[x][y] & self.WEST):
+                    self.canva.create_line(0+x*offset,0+(15-y)*offset,0+x*offset,32+(15-y)*offset,width=4)
+                if(maze[x][y] & self.EAST):
+                    self.canva.create_line(32+x*offset,0+(15-y)*offset,32+x*offset,32+(15-y)*offset,width=4)
+           
+
     def draw_path(self):
         pass
 
