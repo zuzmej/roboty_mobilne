@@ -183,5 +183,5 @@ class weighted_floodfill(algorithm):
         #     for j in range(16):
         #         print(self.path[j][i],end="   ")
         #     print("\n")
-        # return self.path
+        return self.path
 

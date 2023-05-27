@@ -96,10 +96,10 @@ class dijkstra(algorithm):
             col = coords[0]
             row = coords[1]
             self.path[col][row] = 1
-        for i in range(15,-1,-1):   
-            for j in range(16):
-                print(self.path[j][i],end="   ")
-            print("\n")
+        # for i in range(15,-1,-1):   
+        #     for j in range(16):
+        #         print(self.path[j][i],end="   ")
+        #     print("\n")
 
 
     ## @brief  Method that performs all the steps necessary to determine the path 
@@ -113,6 +113,6 @@ class dijkstra(algorithm):
         return self.path
     
 
-mz = maze_reader()
-d = dijkstra(mz.read_maze("mazes/maze5_58"))
-d.solve()
+# mz = maze_reader()
+# d = dijkstra(mz.read_maze("mazes/maze5_58"))
+# d.solve()

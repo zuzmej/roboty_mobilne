@@ -63,7 +63,6 @@ class right_hand(algorithm):
                 back = self.EAST
             position = [column, row]
             self.path[column][row] = 1      # wpisanie 1 do komórki, w której był robot
-            print("position: ", position)
         return self.path
     
     ## @brief implementation of abstract method solve
@@ -74,14 +73,14 @@ class right_hand(algorithm):
         position = [column, row]    # pole startowe [0,0]
         end_position = self.find_finish()   #pole końcowe
         self.right_hand_algorithm(position, end_position)   # wywołanie algorytmu prawej ręki
-        for i in range(15,-1,-1):     # wypisanie wyznaczonej sciezki
-            for j in range(16):
-                print(self.path[j][i], end=" ")
-            print("\n")
+        # for i in range(15,-1,-1):     # wypisanie wyznaczonej sciezki
+        #     for j in range(16):
+        #         print(self.path[j][i], end=" ")
+        #     print("\n")
         return self.path
         
 
 
-maze = maze_reader()
-rh = right_hand(maze.read_maze("mazes/maze_cut"))   #maze_cut da sie rozwiazac prawa reka
-rh.solve()
+# maze = maze_reader()
+# rh = right_hand(maze.read_maze("mazes/maze_cut"))   #maze_cut da sie rozwiazac prawa reka
+# rh.solve()
