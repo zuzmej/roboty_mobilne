@@ -167,16 +167,16 @@ class floodfill(algorithm):
         [end_col,end_row] = self.find_finish()
         self.flood_fill(0,0,end_col,end_row,0)
         self.get_path(0,0,end_col,end_row)
-        for i in range(15,-1,-1):   
-            for j in range(16):
-                print(self.path[j][i],end="   ")
-            print("\n")
+        # for i in range(15,-1,-1):   
+        #     for j in range(16):
+        #         print(self.path[j][i],end="   ")
+        #     print("\n")
 
         return self.path
         
 
-mz = maze_reader()
-f = floodfill(mz.read_maze("mazes/maze2_50"))
-f.solve()
+# mz = maze_reader()
+# f = floodfill(mz.read_maze("mazes/maze2_50"))
+# f.solve()
         
                 
