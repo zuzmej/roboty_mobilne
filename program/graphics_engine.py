@@ -4,6 +4,10 @@ from tkinter import ttk
 import os   #operacje na plikach i katalogach
 
 from maze_reader import maze_reader
+from right_hand import right_hand
+from floodfill import floodfill
+from weighted_floodfill import weighted_floodfill
+from dijkstra import dijkstra 
 
 class graphics_engine(data):
 
@@ -27,7 +31,7 @@ class graphics_engine(data):
         self.choose_algorithm_button.pack()
         self.label_chosen_algorithm = tk.Label(self.window, text="---")
         self.label_chosen_algorithm.pack()
-        self.play = tk.Button(self.window, text="Play")
+        self.play = tk.Button(self.window, text="Play", command=self.draw_path)
         self.play.pack()
         
 
@@ -67,14 +71,13 @@ class graphics_engine(data):
 
     def close_selection_window(self, given_window, chosen):  # metoda do zamykania okienka z listą wybieralną po wybraniu opcji
         if chosen.get():   # jeśli opcja została wybrana
-            print("jestjesm w ifie")
             given_window.destroy()  # zamknij okienko
             if chosen == self.chosen_maze:  # wpisywanie wybranej opcji do etykiety
                 self.label_chosen_maze.config(text=chosen.get())
-                print("jestjesm w ifie 2 ")
                 self.draw_maze(chosen.get())
             if chosen == self.chosen_algorithm:
                 self.label_chosen_algorithm.config(text=chosen.get())
+                self.canva.delete("oval")
 
     def run(self):
         self.window.mainloop()
@@ -89,31 +92,53 @@ class graphics_engine(data):
         # line_s = self.canva.create_line(0,32,32,32,width=4)
         # line_e = self.canva.create_line(32,0,32,32,width=4)
         # line_w = self.canva.create_line(0,0,0,32,width=4)
-        print(filename)
 
         maze_r = maze_reader()
-        maze = maze_r.read_maze(filename)
+        self.maze = maze_r.read_maze(filename)
         # print(maze)
         offset = 32
         for x in range(16):   
             for y in range(16):
-                if(maze[x][y] & self.NORTH):
+                if(self.maze[x][y] & self.NORTH):
                     self.canva.create_line(0+x*offset, 0+(15-y)*offset, 32+x*offset, 0+(15-y)*offset,width=4)
                 
-                if(maze[x][y] & self.SOUTH):
+                if(self.maze[x][y] & self.SOUTH):
                 #    self.canva.create_line(x*offset, y*offset+offset, x*offset+offset, y*offset+offset,width=4)
                     self.canva.create_line(0+x*offset, 32+(15-y)*offset, 32+x*offset, 32+(15-y)*offset,width=4)
                     # self.canva.create_line(512-x*offset, 32+y*offset, 32+x*offset, 32+y*offset,width=4)
 
                     # self.canva.create_line(x+x*offset,y+y*offset,x*offset,y*offset,width=4)
-                if(maze[x][y] & self.WEST):
+                if(self.maze[x][y] & self.WEST):
                     self.canva.create_line(0+x*offset,0+(15-y)*offset,0+x*offset,32+(15-y)*offset,width=4)
-                if(maze[x][y] & self.EAST):
+                if(self.maze[x][y] & self.EAST):
                     self.canva.create_line(32+x*offset,0+(15-y)*offset,32+x*offset,32+(15-y)*offset,width=4)
            
 
     def draw_path(self):
-        pass
+        
+        x_oval = 16  # współrzędna x środka
+        y_oval = 16  # współrzędna y środka
+        radius = 7  # promień kropki
+        offset = 32
+
+        if self.chosen_algorithm.get() == 'prawa ręka':
+            rh = right_hand(self.maze)
+            self.path = rh.solve()
+        if self.chosen_algorithm.get() == 'zalewanie':
+            ff = floodfill(self.maze)
+            self.path = ff.solve()
+        if self.chosen_algorithm.get() == 'ważone zalewanie':
+            wf = weighted_floodfill(self.maze)
+            self.path = wf.solve()
+        if self.chosen_algorithm.get() == 'dijkstra':
+            d = dijkstra(self.maze)
+            self.path = d.solve()
+                    
+        for x in range(16):   
+            for y in range(16):
+                if self.path[x][y] == 1:
+                    self.canva.create_oval((x_oval+x*offset) - radius, (y_oval+(15-y)*offset) - radius, (x_oval+x*offset) + radius, (y_oval+(15-y)*offset) + radius, fill="red", tags="oval")
+
 
 
 apka = graphics_engine()
