@@ -33,7 +33,13 @@ class graphics_engine(data):
         self.label_chosen_algorithm.pack()
         self.play = tk.Button(self.window, text="Play", command=self.draw_path)
         self.play.pack()
-        
+        self.info_label = tk.Label(self.window, text="Pokonana odległość: ")
+        self.info_label.pack()
+
+
+    def conut_len_of_path(self):
+        len = sum(val == 1 for row in self.path for val in row)
+        return len
 
        
 
@@ -78,6 +84,7 @@ class graphics_engine(data):
             if chosen == self.chosen_algorithm:
                 self.label_chosen_algorithm.config(text=chosen.get())
                 self.canva.delete("oval")
+                self.info_label.config(text="Pokonana odległość: ")
 
     def run(self):
         self.window.mainloop()
@@ -138,6 +145,8 @@ class graphics_engine(data):
             for y in range(16):
                 if self.path[x][y] == 1:
                     self.canva.create_oval((x_oval+x*offset) - radius, (y_oval+(15-y)*offset) - radius, (x_oval+x*offset) + radius, (y_oval+(15-y)*offset) + radius, fill="red", tags="oval")
+
+        self.info_label.config(text="Pokonana odległość: " + str(self.conut_len_of_path()) + " kratek")            
 
 
 
