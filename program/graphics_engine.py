@@ -150,5 +150,5 @@ class graphics_engine(data):
 
 
 
-apka = graphics_engine()
-apka.run()
+# apka = graphics_engine()
+# apka.run()
