@@ -11,7 +11,7 @@ The application is used to visualise the performance of maze search algorithms u
 You can add your own mazes to test the performance of the algorithms, by adding the maze file to the mazes directory
 
 ### Maze format
-The file should contain 256 numbers stored in hex format. Each hex number specifies which walls enclose which area of the maze 
+The file should contain 256 numbers stored in hex format. Each hex number specifies what walls enclose given field of the maze 
 -  NORTH WALL  = 1  / bin: 0001
 -  EAST WALL  = 2   / bin: 0010
 -  SOUTH WALL = 4  / bin: 0100
