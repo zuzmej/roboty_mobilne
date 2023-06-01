@@ -76,7 +76,8 @@ class graphics_engine(data):
         option_combobox_maze['values'] = list_of_mazes
         option_combobox_maze.bind("<<ComboboxSelected>>", lambda event: self.close_selection_window(window, self.chosen_maze))
         option_combobox_maze.pack()
-
+    ## @brief Method to create combobox and write to parameter.
+    #
     def option_choose_algorithm(self, window):
         selection_frame_algorithm = tk.Frame(window)
         selection_frame_algorithm.pack(padx=50, pady=50)
