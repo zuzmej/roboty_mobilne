@@ -27,8 +27,8 @@ python3 main.py
 ```
 
 # Description
-This simple application allows the user to choose a maze from the sample mazes (mazes directory), then choose the algorithm. After clicking "Play" button, the algorithm finds the shortest path from left bottom corner (start) to the middle of the maze. 
-**NOTE**
+This simple application allows the user to choose a maze from the sample mazes (mazes directory), then choose the algorithm. After clicking "Play" button, the algorithm finds the shortest path from left bottom corner (start) to the middle of the maze. \
+!**NOTE**
 Right-hand rule does not guarantee finding the solution. In such situations, whenever right-hand algorithm cannot find the solution, the application freezes.
 
 ![choose_maze](https://github.com/zuzmej/roboty_mobilne/assets/101196834/f56ed78c-f1d5-405c-8411-3aaa6d73bfe8)
